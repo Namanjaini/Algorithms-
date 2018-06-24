@@ -1,0 +1,118 @@
+#include<iostream>
+#include<math.h>
+using namespace std; 
+//funnction to find the maximum no. of digits in any no.
+int find_degree(int *a,int n)
+{
+	int max=a[0],j=0;
+	for (int i=0;i<n;i++)
+	{
+		if(a[i]>max)
+		{
+			max=a[i];
+		}
+	}
+	//counting the no, of digits
+	while(max!=0)
+	{
+	
+		max=max/10;
+		j=j+1;
+	}
+	return j;
+}
+
+//function for finding the max value of particular place  in a array
+int find_max(int *a,int n,int col)
+{
+	int x=pow(10,col);
+	int y=pow(10,col-1);
+	int max= (a[0]%x)/y;
+	for (int i=0;i<n;i++)
+	{
+		if( (a[i]%x) / y > max)
+		{
+			
+			max=( a[i]%x )/ y;
+		}
+		
+	}
+	return max;
+}
+int* counting_sort(int *a,int n,int col)
+{
+	int max=find_max(a,n,col);
+	cout<<"max is"<<max<<endl;
+		int x=pow(10,col);
+	int y=pow(10,col-1);
+	cout<<"the max element is "<<max<<endl;
+	int b[max+1]={0};	//cumulative array jisme prev ka sum ho
+	int *c=new int[n];//new array
+	//modify the count array st each element at each index stores the sum of prev. counts 
+	for (int i=0;i<n;i++)
+	{
+		b[ (a[i]%x)/y ]++;
+	}
+	cout<<"the COUNTING array is "<<endl;
+	for (int i=0;i<max+1;i++)
+	{
+		cout<<b[i]<<"\t";
+	}
+	cout<<endl;
+	//c[i] ya usse chhote kitne no. h yaha ye bta rahe hai
+	for(int i=1;i<max+1;i++)
+	{
+		b[i]=b[i]+b[i-1];//sum of prev.
+	}
+	//the cumulative array
+	cout<<"the cumulative array is "<<endl;
+	for (int i=0;i<max+1;i++)
+	{
+		cout<<b[i]<<"\t";
+	}
+	cout<<endl;
+	//making the new sorted array
+	for (int i=n-1;i>=0;i--)
+	{
+			b[ (a[i]%x)/y ]=b[ (a[i]%x)/y ]-1;
+			
+		c[ b[ (a[i]%x)/y ] ]=a[i];
+	}
+	return c;
+}
+int main()
+{
+	int n,m,max;
+	cout<<"Enter the size of input array"<<endl;
+	cin>>n;
+	int *a=new int[n];
+    
+	cout<<"Enter the array:"<<endl;
+	for (int i=0;i<n;i++)
+	{
+		cin>>a[i];
+	}
+	cout<<"The entered array is"<<endl;
+	for (int i=0;i<n;i++)
+	{
+		cout<<a[i]<<"\t";
+	}
+	cout<<endl;
+	//finding the maximum element
+	int max_digits=find_degree(a,n);
+	
+	cout<<"the max digits in any no. are "<<max_digits;
+	
+	for (int i=1;i<=max_digits;i++)
+    {
+	a=counting_sort(a,n,i);
+    }
+    
+	cout<<"the sorted list is"<<endl;
+	
+	for (int i=0;i<n;i++)
+	{
+		cout<<a[i]<<"\t";
+	}
+	cout<<endl;
+}
