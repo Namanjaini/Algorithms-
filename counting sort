@@ -1,0 +1,79 @@
+#include<iostream>
+using namespace std; 
+//function for finding the max value in a array
+int find_max(int *a,int n)
+{
+	int max=a[0];
+	for (int i=0;i<n;i++)
+	{
+		if(a[i]>max)
+		{
+			max=a[i];
+		}
+		return max;
+	}
+}
+int* counting_sort(int *a,int n)
+{
+	
+	//finding the maximum element
+	int max=find_max(a,n);
+	cout<<"the max element is "<<max<<endl;
+	int b[max+1]={0};	//cumulative array jisme prev ka sum ho
+	int *c=new int[n];//new array
+	//modify the ount array st each element at each index stores the sum of prev. counts 
+	for (int i=0;i<n;i++)
+	{
+		b[ a[i] ]++;
+	}
+	cout<<"the COUNTING array is "<<endl;
+	for (int i=0;i<max+1;i++)
+	{
+		cout<<b[i]<<"\t";
+	}
+	cout<<endl;
+	//c[i] ya usse chhote kitne no. h yaha ye bta rahe hai
+	for(int i=1;i<max+1;i++)
+	{
+		b[i]=b[i]+b[i-1];//sum of prev.
+	}
+	//the cumulative array
+	cout<<"the cumulative array is "<<endl;
+	for (int i=0;i<max+1;i++)
+	{
+		cout<<b[i]<<"\t";
+	}
+	cout<<endl;
+	//making the new sorted array
+	for (int i=n-1;i>=0;i--)
+	{
+			b[ a[i] ]=b[ a[i] ]-1;
+			
+		c[ b[ a[i] ] ]=a[i];
+	}
+	return c;
+}
+int main()
+{
+	int n,m,max;
+	cout<<"Enter the size of input array"<<endl;
+	cin>>n;
+	int a[n];
+	cout<<"Enter the array:"<<endl;
+	for (int i=0;i<n;i++)
+	{
+		cin>>a[i];
+	}
+	cout<<"The entered array is"<<endl;
+	for (int i=0;i<n;i++)
+	{
+		cout<<a[i]<<"\t";
+	}
+	int *c=counting_sort(a,n);
+	cout<<"the sorted list is"<<endl;
+	for (int i=0;i<n;i++)
+	{
+		cout<<c[i]<<"\t";
+	}
+	cout<<endl;
+}
