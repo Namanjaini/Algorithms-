@@ -1,0 +1,91 @@
+
+#include<iostream>
+using namespace std;
+class Node
+{
+	 public:
+    int data;
+    Node* next;
+};
+
+class Linked_list
+{
+	    public:
+ 
+          Node* head = NULL;
+          int element;
+       Node* create_node(int data)
+         {
+        Node* temp = new Node;
+        temp->data = data;
+        temp->next = NULL;
+        return temp;
+          }
+
+};
+
+int main()
+{
+	int v,e,m,n;
+	
+	cout<<"enter the number of vertices ";
+	cin>>v;
+	cout<<"enter the number of edges";
+	cin>>e;
+	
+	char A[v];
+	int C[v][v];
+    //filling the matrix with zeroes
+	for(int i=0;i<v;i++)
+    {
+    for(int j=0;j<v;j++)
+    {
+        C[i][j]=0;
+    }
+    }
+    
+    cout<<" enter the name of vertices "<<endl;
+    for(int i=0;i<v;i++)
+    {
+        cin>>A[i];
+    }
+//generating the adjacency matrix
+    for(int i=0;i<v;i++)
+    {
+        int d=0;
+        cout<< " how many vertices are connected with "<< A[i]<<endl;
+        cin>>d;
+        char B[d];
+        cout<< " enter the name of vertices connected with "<<A[i]<<endl;
+        for(int k=0;k<d;k++)
+        {
+            cin>>B[k];
+        }
+
+
+          for(int j=0;j<v;j++)
+         {
+        for(int l=0;l<d;l++)
+        {
+            if(A[j]==B[l])
+            {
+                C[i][j]=1;
+
+            }
+        }
+         }
+
+
+    }
+
+    cout<<endl<<"  Adjency matrix of given graph is "<<endl;
+    for(int i=0;i<v;i++)
+    {
+        for(int j=0;j<v;j++)
+        {
+            cout<<C[i][j]<<"  ";
+        }
+        cout<<endl;
+    }
+
+}
