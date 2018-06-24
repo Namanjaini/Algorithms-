@@ -1,0 +1,57 @@
+InsertionSort(myarray1, size1);
+BubbleSort(myarray1, size1);
+void InsertionSort(Item a[], int Numitems)
+{
+	int InsertItem, InnerCount, TempValue;
+        int swaps = 0; int comparisons = 0;
+	//move through list left to right
+	for (InsertItem = 1; InsertItem < Numitems; InsertItem++)
+	{
+		//copy that value to a temp value
+		TempValue = a[InsertItem];
+		//move from that item to the left
+		for (InnerCount = InsertItem - 1; InnerCount >= 0 &&
+			TempValue < a[InnerCount]; InnerCount--)
+		{
+                        comparisons += 1;
+			//move values to right
+			a[InnerCount+1] = a[InnerCount];
+		}
+		//put insert value into correct spot
+		a[InnerCount+1] = TempValue;
+                swaps +=1;
+	}
+    for(int i=0; i<Numitems; i++)
+            cout<<a[i]<<" " <<endl;
+            cout<<"swaps = "<<swaps<<endl;
+            cout<<"comparisons = "<<comparisons;
+}
+void BubbleSort(Item a[], int Numitems)
+{
+	int NumPasses;
+	int InnerCount;
+	Item TempValue;
+        int swaps = 0; int comparisons = 0;
+	//start outer loop
+	for (NumPasses=0; NumPasses < Numitems-1; NumPasses++)
+	{
+		//start inner loop
+		for (InnerCount=0; InnerCount < Numitems-1; InnerCount++)
+		{
+			//compare adjacent values
+			if (a[InnerCount] > a[InnerCount+1])
+			{
+				//swap values
+				TempValue = a[InnerCount];
+				a[InnerCount] = a[InnerCount+1];
+				a[InnerCount+1] = TempValue;
+               swaps+=1;
+			}
+            comparisons += 1;
+		}
+	}
+         for(int i=0; i<Numitems; i++)
+            cout<<a[i]<<" " ;
+            cout<<"swaps = "<<swaps<<endl;
+            cout<<"comparisons = "<<comparisons<<endl;
+}
