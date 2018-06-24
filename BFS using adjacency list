@@ -1,0 +1,249 @@
+#include<iostream>
+#include<string.h>
+using namespace std;
+#define MAX 30
+class Node
+{
+    public:
+    char data;
+    Node* next;
+};
+
+class Queue
+{
+    public:
+    char element[MAX];
+    // FRONT AND REAR
+    int f,r;
+    void seek()
+    {
+    	cout<<element[f];
+    	
+    	
+	}
+    void create_empty_queue()
+    {
+        f=r=-1;
+    }
+
+    int isFull()
+    {
+        //FULL CONDITION
+        if(f==0&&r==MAX-1)
+        {
+            return 1;
+        }
+        else
+            return 0;
+    }
+
+    int isEmpty()
+    {
+        //EMPTY CONDITION
+        if(f==-1&&r==-1)
+        {
+            return 1;
+        }
+        else
+            return 0;
+    }
+
+    void Insert(char item)
+    {
+        //IF EMPTY
+        if(f==-1&&r==-1)
+        {
+            f=r=0;
+        }
+
+        //IF SOME PLACES ARE LEFT IN STARTING
+        else if(f!=0&&r==MAX-1)
+        {
+            //FOR SHIFTING ELEMENT TO THE START
+            for(int i=f;i<=r;i++)
+            {
+               element[i-f]=element[i];
+            }
+            //REAR IN INSERTING POSTION
+            r=r-f+1;
+
+            f=0;
+        }
+
+        //NORMAL,PARTIALLY FULL
+        else
+        {
+            r++;
+        }
+
+        //INSERTING ELEMENT
+        element[r]=item;
+    }
+
+
+    char Delete()
+    {
+        char temp=element[f];
+        //IF ONE ELEMENT IS PRESENT
+        if(f==r)
+        {
+            f=r=-1;
+        }
+
+        f++;
+
+        return temp;
+    }
+
+    int Size()
+    {
+        return r-f+1;
+    }
+};
+
+class Linked_list1
+{
+    public:
+
+    Node* head = NULL;
+    char element;	
+
+    Node* create_node(char data)
+    {
+        Node* temp = new Node;
+        temp->data = data;
+        temp->next = NULL;
+        return temp;
+    }
+
+    void forward_traverse()
+    {
+    if(this->head == NULL)
+        {
+            cout<<endl<<" list is empty cannot traverse the list"<<endl;
+            return;
+        }
+        Node* temp = this->head;
+
+        while(temp!=NULL)
+        {
+            cout<<temp->data<<"  ";
+            temp = temp->next;
+        }
+    }
+
+    void insertion(char key)
+    {
+        if(this->head == NULL)
+        {
+            this->head = create_node(key);
+        }
+        else
+        {
+            Node* temp = this->head;
+
+            while(temp->next!=NULL)
+            temp = temp->next;
+
+            temp->next = create_node(key);
+        }
+}
+    void getdata(int a)
+    {
+        char ch;
+        cout<<" Enter the vertices present in the list "<<endl;
+
+        do
+        {
+            char vertex;
+            cin>>vertex;
+            this->insertion(vertex);
+
+            cout<<endl<<"Do you want to continue , press 1 for continue else 2"<<endl;
+            cin>>ch;
+        }
+        while(ch == '1');
+    }
+
+};
+//function for BFS
+void BFS(Linked_list1 *adj_list,char src,Queue normal_q,int vertices,int *visited)
+{
+	cout<<"the BFS is ";
+   do
+   {   
+   	cout<<src;
+   	
+   	visited[(int)src-65]=1;
+   	 for (int i=0;i<vertices;i++)
+   {
+   	
+   	if(adj_list[i].element == src)
+   	 {
+   	 	visited[int(src)-65]=1;
+   		Node *temp=adj_list[i].head;
+   	   while(temp->next!=NULL)
+		  {
+   	   		if(visited[(int)temp->data-65] != 1 ) 
+   	   		{
+   	   			cout<< (int)temp->data;
+   	   			visited[(int)temp->data-65] = 1;
+   	   			cout<<temp->data;  //BBBB
+   	   			
+   	   	     	normal_q.Insert(temp->data);
+   	   	  
+   	   	     	normal_q.seek();
+		    }
+		    temp=temp->next;
+		  }
+           
+	   break;	  
+      }
+      
+    } 
+    cout<<normal_q.Size();
+  src=normal_q.Delete();
+           
+
+    
+   }
+		while(normal_q.isEmpty()!=1);
+}
+
+
+int main()
+{
+    int vertices;
+   
+    cout<<endl<<"Enter number of vertices present in graph"<<endl;
+    cin>>vertices;
+    int visited[vertices]={0};
+    Linked_list1 adj_list[vertices];
+
+	for(int i = 0 ;i<vertices;i++)
+    {
+        adj_list[i].element = (char)(65 + i);
+    }
+    
+    //create adjancy matrix
+    for(int i = 0 ;i<vertices;i++)
+    {
+        cout<<endl<<" For vertex "<<(char)(65+i)<<endl;
+        adj_list[i].getdata(vertices);
+    }
+
+    //print
+     for(int i = 0 ;i<vertices;i++)
+    {
+        cout<<endl<<" For vertex "<<(char)(65+i)<<endl;
+        adj_list[i].forward_traverse();
+    }
+// for BFS
+   char src;
+   cout<<"Enter the source vertex"<<endl;
+   cin>>src;
+   Queue normal_q;
+   BFS(adj_list,src,normal_q,vertices,visited);
+   normal_q.create_empty_queue();
+     
+}
